@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from app.models.gpt_api import GPTClient
 import shutil
 import os
 
@@ -29,5 +30,22 @@ async def analyze_photo(image: UploadFile = File(...)):
 
     result = analyze_face(image_path)
 
+    # 기존 GPTClient 인스턴스 생성
+    gpt = GPTClient()
+    
+    # 분석 결과를 GPT에 전송할 프롬프트 생성
+    prompt = f"""아래 json형식의 결과는 사용자의 사진이 여권 사진의 가이드라인과 적합한지 여부를 여러 지표를 통해 판단한 결과이다.
+    결과를 판단해서 사용자에게 사진에 대한 팁을 알려주는 메세지 작성.
+    친절한 말투로 작성하고 이해하기 쉽게 작성.
+    어떤 부분에서 적합/부적합인지 설명.
+    {json.dumps(result, ensure_ascii=False, indent=2)}"""
+
+    # GPT에 프롬프트 전송 및 응답 받기
+    response = gpt.ask(prompt, temperature=1.0, max_tokens=256)
+
+    print("gpt_result", response)
+    
     os.remove(image_path)
-    return JSONResponse(content=result)
+
+    # 결과 반환
+    return JSONResponse(content={"gpt_result": response, "model_result": result})
