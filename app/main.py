@@ -53,7 +53,7 @@ async def analyze_photo(image: UploadFile = File(...)):
     """
 
     # GPT에 프롬프트 전송 및 응답 받기
-    response = gpt.ask(prompt, temperature=1.0, max_tokens=256)
+    response = gpt.ask(prompt, temperature=1.0, max_tokens=512)
 
     print("gpt_result", response)
     
