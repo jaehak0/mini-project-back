@@ -8,16 +8,16 @@ import pandas as pd
 # 이미지 리스트
 image_files = {
     "images2": "app\static\images2.jpg",
-    # "images3": "images3.jpg",
-    # "images4": "images4.jpg",
-    # "images5": "images5.jpg",
-    # "smile1": "smile1.jpg",
-    # "smile2": "smile2.jpg",
-    # "smile3": "smile3.jpg",
-    # "smile4": "smile4.jpg",
-    # "neutral1": "neutral1.jpg",
-    # "neutral2": "neutral2.jpg",
-    # "neutral3": "neutral3.jpg",
+    "images3": "app\static\images3.jpg",
+    "images4": "app\static\images4.jpg",
+    "images5": "app\static\images5.jpg",
+    "smile1": "app\static\smile1.jpg",
+    "smile2": "app\static\smile2.jpg",
+    "smile3": "app\static\smile3.jpg",
+    "smile4": "app\static\smile4.jpg",
+    "neutral1": "app\static\\neutral1.jpg",
+    "neutral2": "app\static\\neutral2.jpg",
+    "neutral3": "app\static\\neutral3.jpg",
 }
 
 dict_emotion_kor = {
