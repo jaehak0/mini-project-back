@@ -34,15 +34,23 @@ async def analyze_photo(image: UploadFile = File(...)):
     # 1. 얼굴 분석
     result = analyze_face(image_path)
     print("result", result)
+
     # 기존 GPTClient 인스턴스 생성
     gpt = GPTClient()
     
     # 분석 결과를 GPT에 전송할 프롬프트 생성
-    prompt = f"""아래 json형식의 결과는 사용자의 사진이 여권 사진의 가이드라인과 적합한지 여부를 여러 지표를 통해 판단한 결과이다.
-    결과를 판단해서 사용자에게 사진에 대한 팁을 알려주는 메세지 작성.
-    친절한 말투로 작성하고 이해하기 쉽게 작성.
-    어떤 부분에서 적합/부적합인지 설명.
-    {json.dumps(result, ensure_ascii=False, indent=2)}"""
+    prompt = f"""
+    다음은 사용자의 얼굴 사진이 여권 사진의 가이드라인에 적합한지를 분석한 JSON 형식의 결과입니다.
+    이 결과를 바탕으로 사진이 적합한지 여부를 판단하고, 사용자에게 이해하기 쉬운 조언을 친절한 말투로 작성해 주세요.
+
+    조건:
+    - 전체적인 결과를 바탕으로 사진이 적합한지 알려 주세요.
+    - 부적합한 경우, 어떤 점을 개선하면 좋을지 사진 촬영 팁을 알려 주세요.
+    - 너무 딱딱하지 않고, 부드럽고 친절한 말투로 작성해 주세요.
+
+    분석 결과:
+    {json.dumps(result, ensure_ascii=False, indent=2)}
+    """
 
     # GPT에 프롬프트 전송 및 응답 받기
     response = gpt.ask(prompt, temperature=1.0, max_tokens=256)
