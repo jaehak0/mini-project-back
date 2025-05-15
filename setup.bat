@@ -20,7 +20,7 @@ start cmd /k "conda activate mini-project && uvicorn app.main:app --reload --por
 echo =========================
 echo [4] 프론트엔드 실행 (React)
 echo =========================
-start cmd /k "cd /d C:\Users\201-1\Documents\GitHub\mini-project-front && npm run dev"
+start cmd /k "cd /d C:\Users\201-1\Documents\GitHub\mini-project-front && npm install && npm run dev"
 
 echo =========================
 echo [5] 웹 브라우저 자동 열기 (React 페이지)
