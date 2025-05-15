@@ -7,17 +7,17 @@ import pandas as pd
 
 # 이미지 리스트
 image_files = {
-    "images2": "images2.jpg",
-    "images3": "images3.jpg",
-    "images4": "images4.jpg",
-    "images5": "images5.jpg",
-    "smile1": "smile1.jpg",
-    "smile2": "smile2.jpg",
-    "smile3": "smile3.jpg",
-    "smile4": "smile4.jpg",
-    "neutral1": "neutral1.jpg",
-    "neutral2": "neutral2.jpg",
-    "neutral3": "neutral3.jpg",
+    "images2": "app\static\images2.jpg",
+    # "images3": "images3.jpg",
+    # "images4": "images4.jpg",
+    # "images5": "images5.jpg",
+    # "smile1": "smile1.jpg",
+    # "smile2": "smile2.jpg",
+    # "smile3": "smile3.jpg",
+    # "smile4": "smile4.jpg",
+    # "neutral1": "neutral1.jpg",
+    # "neutral2": "neutral2.jpg",
+    # "neutral3": "neutral3.jpg",
 }
 
 dict_emotion_kor = {
