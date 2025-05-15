@@ -33,7 +33,7 @@ async def analyze_photo(image: UploadFile = File(...)):
 
     # 1. 얼굴 분석
     result = analyze_face(image_path)
-
+    print("result", result)
     # 기존 GPTClient 인스턴스 생성
     gpt = GPTClient()
     
