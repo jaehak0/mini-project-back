@@ -4,15 +4,22 @@ def analyze_face(image_path):
     import mediapipe as mp
 
     dict_emotion_kor = {
-        "angry": "화남", "disgust": "혐오", "fear": "두려움",
-        "happy": "행복", "sad": "슬픔", "surprise": "놀람", "neutral": "무표정"
+        "angry": "화남",
+        "disgust": "혐오",
+        "fear": "두려움",
+        "happy": "행복",
+        "sad": "슬픔",
+        "surprise": "놀람",
+        "neutral": "무표정",
     }
 
     mp_face_mesh = mp.solutions.face_mesh
     face_mesh = mp_face_mesh.FaceMesh(static_image_mode=True, refine_landmarks=True)
 
     try:
-        result = DeepFace.analyze(img_path=image_path, actions=['emotion'], detector_backend='mtcnn')
+        result = DeepFace.analyze(
+            img_path=image_path, actions=["emotion"], detector_backend="mtcnn"
+        )
         dominant_emotion = result[0]["dominant_emotion"]
     except Exception as e:
         return {"error": f"DeepFace 분석 실패: {str(e)}"}
@@ -76,11 +83,11 @@ def analyze_face(image_path):
         LEFT_EYE = 159
         eyebrow_diffs = [abs(get_y(e) - get_y(LEFT_EYE)) for e in LEFT_EYEBROW]
         avg_eyebrow_diff = sum(eyebrow_diffs) / len(eyebrow_diffs)
-        eyebrow_hidden = "⭕ 보임" if avg_eyebrow_diff >= 3.5 else "❌ 가림 의심"
+        eyebrow_hidden = "⭕ 보임" if avg_eyebrow_diff >= 0.2 else "❌ 가림 의심"
 
         # 귀 노출
         face_width = abs(get_x(454) - get_x(234))
-        ear_hidden = "⭕ 보임" if face_width >= (w * 0.35) else "❌ 가림 의심"
+        ear_hidden = "⭕ 보임" if face_width >= (w * 0.30) else "❌ 가림 의심"
 
         # 시선 추정
         def estimate_gaze(outer, inner, center_idx):
@@ -93,24 +100,39 @@ def analyze_face(image_path):
 
         gaze_left = estimate_gaze(33, 133, 468)
         gaze_right = estimate_gaze(362, 263, 473)
-        gaze_result = "⭕ 정면 응시" if gaze_left < 0.25 and gaze_right < 0.25 else "❌ 시선 이탈"
+        gaze_result = (
+            "⭕ 정면 응시" if gaze_left < 0.05 and gaze_right < 0.05 else "❌ 시선 이탈"
+        )
 
         # 얼굴 정면 여부
         x_left_face = get_x(127)
         x_right_face = get_x(356)
         face_center_x = (x_left_face + x_right_face) / 2
-        nose_offset = abs(xnose - face_center_x)
-        face_straight = "⭕ 정면" if nose_offset < (w * 0.03) else "❌ 측면"
+        face_width = x_right_face - x_left_face
 
-        # 최종 판단
+        nose_offset = abs(xnose - face_center_x)
+
+        # 얼굴 중심에서 코가 얼마나 벗어나 있는가
+        face_straight = "⭕ 정면" if nose_offset < (face_width * 0.03) else "❌ 측면"
+
+        # 약한 미소 허용 조건
+        allow_subtle_smile = dominant_emotion == "neutral" or (
+            dominant_emotion == "happy" and slope <= 0.015 and cheek_diff < 3.0
+        )
+
+        # 최종 판단 조건 (강화된 여권 기준)
         if (
-            (dominant_emotion in ["neutral", "happy"]) and
-            (mouth_open_ratio < 0.12) and
-            (mouth_width < 60) and
-            (slope <= 0.05) and
-            (lip_asymmetry < 4.0) and
-            (cheek_diff < 6.0) and
-            (center_offset < 10.0)
+            allow_subtle_smile
+            and (mouth_open_ratio < 0.12)
+            and (mouth_width < 60)
+            and (slope <= 0.08)
+            and (lip_asymmetry < 4.0)
+            and (cheek_diff < 6.0)
+            and (center_offset < 10.0)
+            and (eyebrow_hidden == "⭕ 보임")
+            and (ear_hidden == "⭕ 보임")
+            and (gaze_result == "⭕ 정면 응시")
+            and (face_straight == "⭕ 정면")
         ):
             judgment = "⭕ 적합"
         else:
@@ -129,5 +151,5 @@ def analyze_face(image_path):
         "귀노출": ear_hidden,
         "시선정면": gaze_result,
         "얼굴정면": face_straight,
-        "최종 판단": judgment
+        "최종 판단": judgment,
     }
