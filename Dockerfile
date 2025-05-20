@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y \
 
 # 빌드 스테이지에서 설치된 패키지들 복사
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
 # 애플리케이션 코드 복사
 COPY . .
@@ -103,6 +104,10 @@ RUN find . -type d -name "__pycache__" -exec rm -r {} + \
 
 # 포트 설정
 EXPOSE 8000
+
+# 환경 변수 설정
+ENV PYTHONPATH=/app
+ENV PATH="/usr/local/bin:${PATH}"
 
 # 애플리케이션 실행
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"] 
