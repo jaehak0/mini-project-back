@@ -1,31 +1,35 @@
 # 빌드 스테이지
-FROM python:3.10-slim as builder
+FROM python:3.10-alpine as builder
 
 # 작업 디렉토리 설정
 WORKDIR /app
 
 # 필요한 시스템 패키지 설치
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    python3-dev \
+    libffi-dev \
+    openssl-dev \
+    cargo \
+    make \
+    g++ \
+    linux-headers
 
 # requirements.txt 복사 및 패키지 설치
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 실행 스테이지
-FROM python:3.10-slim
+FROM python:3.10-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
 
 # 필요한 시스템 패키지만 설치
-RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+RUN apk add --no-cache \
+    libstdc++ \
+    libgcc
 
 # 빌드 스테이지에서 설치된 패키지들 복사
 COPY --from=builder /usr/local/lib/python3.10/site-packages /usr/local/lib/python3.10/site-packages
