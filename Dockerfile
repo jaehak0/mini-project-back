@@ -108,6 +108,7 @@ EXPOSE 8000
 # 환경 변수 설정
 ENV PYTHONPATH=/app
 ENV PATH="/usr/local/bin:${PATH}"
+ENV PORT=8000
 
 # 애플리케이션 실행
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"] 
+CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT} 
