@@ -283,3 +283,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,pycharm+all,visualstudiocode
 /test
 /__pycache__
+*.pyc
+/app/models/bg_removal/__pycache__
