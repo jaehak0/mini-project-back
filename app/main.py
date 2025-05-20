@@ -15,10 +15,10 @@ from app.models.bg_removal.bria_rmbg_removal import remove_background_bria_rmbg 
 
 app = FastAPI()
 
-# ✅ CORS 설정
+# CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5555", "https://mini-project-front-woad.vercel.app"],
+    allow_origins=["*"],  # Render 배포를 위해 모든 origin 허용
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
