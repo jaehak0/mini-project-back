@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-dev \
     libgl1-mesa-glx \
     libglib2.0-0 \
+    libssl-dev \
+    libprotobuf-dev \
+    protobuf-compiler \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -42,6 +45,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgl1-mesa-glx \
     libglib2.0-0 \
+    libssl1.1 \
+    libprotobuf23 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
