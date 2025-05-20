@@ -43,7 +43,63 @@ RUN find . -type d -name "__pycache__" -exec rm -r {} + \
     && find . -type f -name "*.pyd" -delete \
     && find . -type f -name "*.so" -delete \
     && find . -type f -name "*.a" -delete \
-    && find . -type f -name "*.o" -delete
+    && find . -type f -name "*.o" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type d -name "tests" -exec rm -rf {} + \
+    && find /usr/local/lib/python3.10/site-packages -type d -name "test" -exec rm -rf {} + \
+    && find /usr/local/lib/python3.10/site-packages -type d -name "docs" -exec rm -rf {} + \
+    && find /usr/local/lib/python3.10/site-packages -type d -name "examples" -exec rm -rf {} + \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.pyi" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.pyx" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.pxd" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.h" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.c" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.cpp" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.cc" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.cxx" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.hpp" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.hxx" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.html" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.js" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.css" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.jpg" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.jpeg" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.png" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.gif" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.svg" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.ico" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.ttf" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.woff" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.woff2" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.eot" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.otf" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.pdf" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.zip" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.tar.gz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.tar" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.tgz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.rar" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.7z" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.bz2" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.xz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lzma" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lzo" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lz4" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.zst" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.zstd" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.z" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.Z" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.gz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.bz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.xz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lzma" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lz" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lzo" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.lz4" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.zst" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.zstd" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.z" -delete \
+    && find /usr/local/lib/python3.10/site-packages -type f -name "*.Z" -delete
 
 # 포트 설정
 EXPOSE 8000
