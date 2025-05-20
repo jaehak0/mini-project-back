@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libprotobuf-dev \
     protobuf-compiler \
+    libopenblas-dev \
+    liblapack-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,12 +23,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 
 # 패키지 설치 최적화
-# 1. 중요 의존성 먼저 설치
-# 2. 캐시 사용 안함 + 컴파일 안함 옵션 추가
-# 3. 불필요한 파일 정리
-RUN pip install --no-cache-dir --no-compile typing-extensions==4.12.2 \
+RUN pip install --no-cache-dir --no-compile -r requirements.txt \
     && pip install --no-cache-dir --no-compile torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cpu \
-    && pip install --no-cache-dir --no-compile -r requirements.txt \
     && find /usr/local/lib/python3.10/site-packages -name "*.pyc" -delete \
     && find /usr/local/lib/python3.10/site-packages -name "__pycache__" -delete \
     && find /usr/local/lib/python3.10/site-packages -name "*.so" -exec strip -s {} \; 2>/dev/null || true \
@@ -47,6 +45,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     libssl1.1 \
     libprotobuf23 \
+    libopenblas-base \
+    liblapack3 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* 
 
@@ -63,7 +63,8 @@ ENV PYTHONPATH=/app \
     PATH="/usr/local/bin:${PATH}" \
     PORT=8000 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    OPENBLAS_NUM_THREADS=1
 
 # 디렉토리 생성
 RUN mkdir -p app/static
