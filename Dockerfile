@@ -4,27 +4,29 @@ FROM python:3.10-slim-bullseye as builder
 # 작업 디렉토리 설정
 WORKDIR /app
 
+# requirements.txt 복사
+COPY requirements.txt .
+
 # 필요한 최소한의 시스템 패키지만 설치
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     python3-dev \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    libssl-dev \
-    libprotobuf-dev \
-    protobuf-compiler \
-    libopenblas-dev \
-    liblapack-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# requirements.txt 복사
-COPY requirements.txt .
+# PyTorch와 관련 패키지 설치 최적화
+RUN pip install --no-cache-dir --no-compile torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cpu \
+    && find /usr/local/lib/python3.10/site-packages -name "*.pyc" -delete \
+    && find /usr/local/lib/python3.10/site-packages -name "__pycache__" -delete \
+    && find /usr/local/lib/python3.10/site-packages -name "*.so" -exec strip -s {} \; 2>/dev/null || true \
+    && find /usr/local/lib/python3.10/site-packages -name "*.c" -delete \
+    && find /usr/local/lib/python3.10/site-packages -name "*.pyx" -delete \
+    && find /usr/local/lib/python3.10/site-packages -name "*.txt" -delete \
+    && rm -rf /root/.cache/pip
 
-# 패키지 설치 최적화
+# requirements.txt에 있는 패키지 설치
 RUN pip install --no-cache-dir --no-compile -r requirements.txt \
-    && pip install --no-cache-dir --no-compile torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cpu \
     && find /usr/local/lib/python3.10/site-packages -name "*.pyc" -delete \
     && find /usr/local/lib/python3.10/site-packages -name "__pycache__" -delete \
     && find /usr/local/lib/python3.10/site-packages -name "*.so" -exec strip -s {} \; 2>/dev/null || true \
