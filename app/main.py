@@ -18,7 +18,7 @@ app = FastAPI()
 # ✅ CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5555"],
+    allow_origins=["http://localhost:5555", "https://mini-project-front-woad.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
